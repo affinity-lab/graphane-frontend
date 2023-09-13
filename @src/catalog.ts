@@ -6,7 +6,7 @@ import {isMatch} from "micromatch";
 
 
 export class Catalog {
-    public static readonly hostUrl: string;
+    public static readonly hostUrl: string = "";
 
     public readonly files: FileAttachment[] = [];
 

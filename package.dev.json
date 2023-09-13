@@ -1,0 +1,11 @@
+{
+	"name": "@affinity-lab/graphane-frontend",
+	"version": "0.0.1",
+	"author": "Affinity Lab",
+	"scripts": {},
+	"files": [
+		"./**/*"
+	],
+	"dependencies": {
+	}
+}

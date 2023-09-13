@@ -49,10 +49,7 @@ class FileAttachment {
     }
     ;
     img(x, y) {
-        return new ImageAttachment(this.file, this.catalog, {
-            width: x,
-            height: y
-        });
+        return ImageAttachment.create(this, { width: x, height: y });
     }
     ;
 }
@@ -63,18 +60,20 @@ __decorate([
     __metadata("design:paramtypes", [])
 ], FileAttachment.prototype, "url", null);
 class ImageAttachment extends FileAttachment {
-    constructor(file, catalog, dimensions) {
-        super(file, catalog);
-        this.dominant = file.dominant;
-        this.isAnimated = file.isAnimated;
-        this.focus = file.focus;
-        this.version = file.version;
-        this.dimensions = dimensions;
-        const i = this.name.lastIndexOf(".");
+    static create(init, dimensions) {
+        const instance = init;
+        const file = init.file;
+        instance.dominant = file.dominant;
+        instance.isAnimated = file.isAnimated;
+        instance.focus = file.focus;
+        instance.version = file.version;
+        instance.dimensions = dimensions;
+        const i = instance.name.lastIndexOf(".");
         if (i === -1)
-            throw new Error(`No extension: ${this.name}`);
-        this.fileName = this.name.slice(0, i);
-        this.extension = this.name.slice(i + 1);
+            throw new Error(`No extension: ${instance.name}`);
+        instance.fileName = instance.name.slice(0, i);
+        instance.extension = instance.name.slice(i + 1);
+        return instance;
     }
     ;
     get webp() {

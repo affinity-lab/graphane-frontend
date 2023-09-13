@@ -46,7 +46,7 @@ export class FileAttachment implements FileInterface {
 
     location: string;
 
-    constructor(protected readonly file: FileInterface, protected readonly catalog: Catalog) {
+    constructor(public readonly file: FileInterface, protected readonly catalog: Catalog) {
         this.size = file.size;
         this.name = file.name;
         this.mimeType = file.mimeType;
@@ -60,14 +60,7 @@ export class FileAttachment implements FileInterface {
     };
 
     img(x: number, y: number): ImageAttachment {
-        return new ImageAttachment(
-            this.file as ImageInterface,
-            this.catalog,
-            {
-                width: x,
-                height: y
-            }
-        );
+        return ImageAttachment.create(this, {width: x, height: y});
     };
 }
 
@@ -86,17 +79,19 @@ export class ImageAttachment extends FileAttachment implements ImageInterface {
 
     extension: string;
 
-    constructor(file: ImageInterface, catalog: Catalog, dimensions: ImgDimension) {
-        super(file, catalog);
-        this.dominant = file.dominant;
-        this.isAnimated = file.isAnimated;
-        this.focus = file.focus;
-        this.version = file.version;
-        this.dimensions = dimensions;
-        const i: number = this.name.lastIndexOf(".");
-        if (i === -1) throw new Error(`No extension: ${this.name}`);
-        this.fileName = this.name.slice(0, i);
-        this.extension = this.name.slice(i + 1);
+    static create(init: FileAttachment, dimensions: ImgDimension): ImageAttachment {
+        const instance: ImageAttachment = init as ImageAttachment;
+        const file: ImageInterface = init.file as ImageInterface;
+        instance.dominant = file.dominant;
+        instance.isAnimated = file.isAnimated;
+        instance.focus = file.focus;
+        instance.version = file.version;
+        instance.dimensions = dimensions;
+        const i: number = instance.name.lastIndexOf(".");
+        if (i === -1) throw new Error(`No extension: ${instance.name}`);
+        instance.fileName = instance.name.slice(0, i);
+        instance.extension = instance.name.slice(i + 1);
+        return instance;
     };
 
     @MaterializeIt()

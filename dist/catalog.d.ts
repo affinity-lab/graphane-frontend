@@ -11,7 +11,7 @@ export declare class Catalog {
     find(namePattern: string): FileAttachment | undefined;
 }
 export declare class FileAttachment implements FileInterface {
-    protected readonly file: FileInterface;
+    readonly file: FileInterface;
     protected readonly catalog: Catalog;
     size: number;
     name: string;
@@ -30,6 +30,6 @@ export declare class ImageAttachment extends FileAttachment implements ImageInte
     version: number;
     fileName: string;
     extension: string;
-    constructor(file: ImageInterface, catalog: Catalog, dimensions: ImgDimension);
+    static create(init: FileAttachment, dimensions: ImgDimension): ImageAttachment;
     get webp(): string;
 }

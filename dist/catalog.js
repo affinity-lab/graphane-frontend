@@ -33,6 +33,7 @@ class Catalog {
     ;
 }
 exports.Catalog = Catalog;
+Catalog.hostUrl = "";
 class FileAttachment {
     constructor(file, catalog) {
         this.file = file;

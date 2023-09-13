@@ -13,10 +13,9 @@ exports.ImageAttachment = exports.FileAttachment = exports.Catalog = void 0;
 const materialize_it_1 = require("./materialize-it");
 const micromatch_1 = require("micromatch");
 class Catalog {
-    constructor(entity, catalogName, hostUrl) {
+    constructor(entity, catalogName) {
         this.entity = entity;
         this.catalogName = catalogName;
-        this.hostUrl = hostUrl;
         this.files = [];
         const files = entity.attachments[catalogName];
         for (let file of files) {
@@ -46,7 +45,7 @@ class FileAttachment {
     }
     ;
     get url() {
-        return `${this.catalog.hostUrl}/files/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
+        return `${Catalog.hostUrl}/files/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
     }
     ;
     img(x, y) {
@@ -79,7 +78,7 @@ class ImageAttachment extends FileAttachment {
     }
     ;
     get webp() {
-        return `${this.catalog.hostUrl}/images/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
+        return `${Catalog.hostUrl}/images/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
     }
     ;
 }

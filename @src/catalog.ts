@@ -6,12 +6,13 @@ import {isMatch} from "micromatch";
 
 
 export class Catalog {
+    public static readonly hostUrl: string;
+
     public readonly files: FileAttachment[] = [];
 
     constructor(
         public readonly entity: AtomWithAttachments,
-        public readonly catalogName: string,
-        public readonly hostUrl: string
+        public readonly catalogName: string
     ) {
         const files: FileInterface[] = entity.attachments[catalogName];
         for (let file of files) {
@@ -55,7 +56,7 @@ export class FileAttachment implements FileInterface {
 
     @MaterializeIt()
     get url(): string {
-        return `${this.catalog.hostUrl}/files/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
+        return `${Catalog.hostUrl}/files/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
     };
 
     img(x: number, y: number): ImageAttachment {
@@ -100,6 +101,6 @@ export class ImageAttachment extends FileAttachment implements ImageInterface {
 
     @MaterializeIt()
     get webp(): string {
-        return `${this.catalog.hostUrl}/images/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
+        return `${Catalog.hostUrl}/images/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
     };
 }

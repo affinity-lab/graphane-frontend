@@ -4,9 +4,9 @@ import { ImageInterface, ImgDimension, ImgFocus, ImgRGB } from "./image-interfac
 export declare class Catalog {
     readonly entity: AtomWithAttachments;
     readonly catalogName: string;
-    readonly hostUrl: string;
+    static readonly hostUrl: string;
     readonly files: FileAttachment[];
-    constructor(entity: AtomWithAttachments, catalogName: string, hostUrl: string);
+    constructor(entity: AtomWithAttachments, catalogName: string);
     get first(): FileAttachment | undefined;
     find(namePattern: string): FileAttachment | undefined;
 }

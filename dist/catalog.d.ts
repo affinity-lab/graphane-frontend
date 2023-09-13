@@ -8,7 +8,7 @@ export declare class Catalog {
     readonly files: FileAttachment[];
     constructor(entity: AtomWithAttachments, catalogName: string, hostUrl: string);
     get first(): FileAttachment | undefined;
-    find(name: string): FileAttachment | undefined;
+    find(namePattern: string): FileAttachment | undefined;
 }
 export declare class FileAttachment implements FileInterface {
     protected readonly file: FileInterface;

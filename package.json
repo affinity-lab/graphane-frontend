@@ -11,8 +11,11 @@
 		"./**/*"
 	],
 	"dependencies": {
+		"micromatch": "^4.0.5"
 	},
 	"devDependencies": {
-		"typescript": "^5.2.2"
+		"typescript": "^5.2.2",
+		"@types/node": "^20.6.0",
+		"@types/micromatch": "^4.0.2"
 	}
 }

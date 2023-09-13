@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ImageAttachment = exports.FileAttachment = exports.Catalog = void 0;
 const materialize_it_1 = require("./materialize-it");
+const micromatch_1 = require("micromatch");
 class Catalog {
     constructor(entity, catalogName, hostUrl) {
         this.entity = entity;
@@ -27,8 +28,8 @@ class Catalog {
         return this.files[0];
     }
     ;
-    find(name) {
-        return this.files.find((file) => file.name === name);
+    find(namePattern) {
+        return this.files.find((file) => (0, micromatch_1.isMatch)(file.name, namePattern));
     }
     ;
 }

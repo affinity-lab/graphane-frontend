@@ -2,6 +2,7 @@ import type {AtomWithAttachments} from "./atom-with-attachments";
 import {FileInterface} from "./file-interface";
 import {MaterializeIt} from "./materialize-it";
 import {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "./image-interface";
+import {isMatch} from "micromatch";
 
 
 export class Catalog {
@@ -22,8 +23,8 @@ export class Catalog {
         return this.files[0];
     };
 
-    find(name: string): FileAttachment | undefined {
-        return this.files.find((file: FileAttachment): boolean => file.name === name);
+    find(namePattern: string): FileAttachment | undefined {
+        return this.files.find((file: FileAttachment): boolean => isMatch(file.name, namePattern));
     };
 
     // async download(url: string): Promise<any> {

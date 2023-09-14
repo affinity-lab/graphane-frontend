@@ -7,7 +7,9 @@ export function uploadRoute(
     createToken: (event: RequestEvent) => string | undefined
 ): RequestHandler {
     return async function (event: RequestEvent): Promise<Response> {
-        const body: FormData = await event.request.formData();
+        console.log("bug!");
+        const body: FormData = await event.request.formData();  // todo: promise doesn't resolve
+        console.log("The bug didn't happen");
         const data = Object.fromEntries(body);
         const module: File | string | undefined = data.module;
         const entityName: File | string | undefined = data.entityName;

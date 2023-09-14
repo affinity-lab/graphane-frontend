@@ -1,5 +1,8 @@
-export * from "./atom-with-attachments";
-export * from "./catalog";
-export * from "./file-interface";
-export * from "./image-interface";
-export * from "./materialize-it";
+export * from "./entities/atom-with-attachments";
+export * from "./entities/catalog";
+export * from "./entities/file-interface";
+export * from "./entities/image-interface";
+export * from "./entities/materialize-it";
+
+export * from "./routes/gql";
+export * from "./routes/upload";

@@ -10,7 +10,9 @@
         "emitDecoratorMetadata": true,
         "strictPropertyInitialization": false,
         "lib": [
-            "ESNext"
+            "ESNext",
+            "dom",
+            "dom.iterable"
         ],
         "resolveJsonModule": true,
         "baseUrl": "./"

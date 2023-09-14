@@ -11,7 +11,8 @@
 		"./**/*"
 	],
 	"dependencies": {
-		"micromatch": "^4.0.5"
+		"micromatch": "^4.0.5",
+		"@sveltejs/kit": "^1.25.0"
 	},
 	"devDependencies": {
 		"typescript": "^5.2.2",

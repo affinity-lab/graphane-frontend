@@ -4,11 +4,15 @@ import { ImageInterface, ImgDimension, ImgFocus, ImgRGB } from "./image-interfac
 export declare class Catalog {
     readonly entity: AtomWithAttachments;
     readonly catalogName: string;
-    static readonly hostUrl: string;
+    static readonly fileUrl: string;
+    static readonly imageUrl: string;
+    static readonly uploadUrl: string;
     readonly files: FileAttachment[];
     constructor(entity: AtomWithAttachments, catalogName: string);
     get first(): FileAttachment | undefined;
     find(namePattern: string): FileAttachment | undefined;
+    download(url: string): Promise<Response>;
+    upload(files: File | File[]): Promise<any>;
 }
 export declare class FileAttachment implements FileInterface {
     readonly file: FileInterface;

@@ -17,7 +17,9 @@ class Catalog {
         this.entity = entity;
         this.catalogName = catalogName;
         this.files = [];
-        const files = entity.attachments[catalogName];
+        if (!entity.META.catalogs?.includes(catalogName) || entity[catalogName] === undefined)
+            throw new Error(`Catalog does not present in entity: ${entity.META.ident}.`);
+        const files = entity[catalogName];
         for (let file of files) {
             this.files.push(new FileAttachment(file, this));
         }
@@ -31,9 +33,29 @@ class Catalog {
         return this.files.find((file) => (0, micromatch_1.isMatch)(file.name, namePattern));
     }
     ;
+    download(url) {
+        return fetch(url, { method: "POST" });
+    }
+    ;
+    async upload(files) {
+        if (!Array.isArray(files))
+            files = [files];
+        const body = new FormData();
+        for (let file of files) {
+            body.append(file.name, file);
+        }
+        body.append("module", this.entity.META.module);
+        body.append("entityName", this.entity.META.entityName);
+        body.append("id", this.entity.id.toString());
+        body.append("catalog", this.catalogName);
+        return await fetch(Catalog.uploadUrl, { body });
+    }
+    ;
 }
 exports.Catalog = Catalog;
-Catalog.hostUrl = "";
+Catalog.fileUrl = "";
+Catalog.imageUrl = "";
+Catalog.uploadUrl = "";
 class FileAttachment {
     constructor(file, catalog) {
         this.file = file;
@@ -46,7 +68,7 @@ class FileAttachment {
     }
     ;
     get url() {
-        return `${Catalog.hostUrl}/files/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
+        return `${Catalog.fileUrl}/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
     }
     ;
     img(x, y) {
@@ -78,7 +100,7 @@ class ImageAttachment extends FileAttachment {
     }
     ;
     get webp() {
-        return `${Catalog.hostUrl}/images/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
+        return `${Catalog.imageUrl}/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
     }
     ;
 }

@@ -1,4 +1,5 @@
 import type {FileInterface} from "./file-interface";
+import type {ImageInterface} from "./image-interface";
 
 
 export interface META {
@@ -9,7 +10,7 @@ export interface META {
 }
 
 export interface AtomWithAttachments {
-    [key: string]: FileInterface[] | number | META;
+    [key: string]: FileInterface[] | ImageInterface[] | number | META;
 
     id: number;
     META: META;

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gql = void 0;
-function gql(gqlUrl, api_key, createToken) {
+exports.gqlRoute = void 0;
+function gqlRoute(gqlUrl, api_key, createToken) {
     return async function (event) {
         return await fetch(gqlUrl, {
             body: await event.request.text(),
@@ -14,4 +14,4 @@ function gql(gqlUrl, api_key, createToken) {
         });
     };
 }
-exports.gql = gql;
+exports.gqlRoute = gqlRoute;

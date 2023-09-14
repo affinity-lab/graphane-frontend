@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.upload = void 0;
-function upload(uploadUrl, api_key, createToken) {
+exports.uploadRoute = void 0;
+function uploadRoute(uploadUrl, api_key, createToken) {
     return async function (event) {
         const body = await event.request.formData();
         const data = Object.fromEntries(body);
@@ -38,4 +38,4 @@ function upload(uploadUrl, api_key, createToken) {
         });
     };
 }
-exports.upload = upload;
+exports.uploadRoute = uploadRoute;

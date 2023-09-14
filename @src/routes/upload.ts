@@ -1,7 +1,7 @@
 import type {RequestEvent, RequestHandler} from "@sveltejs/kit";
 
 
-export function upload(
+export function uploadRoute(
     uploadUrl: string,
     api_key: string,
     createToken: (event: RequestEvent) => string | undefined

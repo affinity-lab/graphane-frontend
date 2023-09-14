@@ -1,7 +1,7 @@
 import type {RequestEvent, RequestHandler} from "@sveltejs/kit";
 
 
-export function gql(
+export function gqlRoute(
     gqlUrl: string,
     api_key: string,
     createToken: (event: RequestEvent) => string | undefined

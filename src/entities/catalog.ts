@@ -3,6 +3,7 @@ import type {FileInterface} from "./file-interface";
 import {MaterializeIt} from "../util/materialize-it";
 import type {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "./image-interface";
 import {isMatch} from "micromatch";
+import type {RequestEvent} from "@sveltejs/kit";
 
 
 export class Catalog {
@@ -37,7 +38,7 @@ export class Catalog {
         return fetch(url, {method: "POST"});
     };
 
-    async upload(files: File | File[]): Promise<any> {
+    async upload(files: File | File[], event: RequestEvent): Promise<Response> {
         if (!Array.isArray(files)) files = [files];
         const body: FormData = new FormData();
         for (let file of files) {
@@ -47,7 +48,7 @@ export class Catalog {
         body.append("entityName", this.entity.META.entityName);
         body.append("id", this.entity.id.toString());
         body.append("catalog", this.catalogName);
-        return await fetch(Catalog.uploadUrl, {body});
+        return await event.fetch(Catalog.uploadUrl, {body});
     };
 }
 

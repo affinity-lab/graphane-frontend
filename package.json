@@ -2,7 +2,7 @@
 	"name": "@affinity-lab/graphane-frontend",
 	"version": "0.0.1",
 	"author": "Affinity Lab",
-	"main": "dist/index",
+	"main": "@src/index",
 	"scripts": {
 		"rebuild": "find . -type d -depth 1 ! -name \"@*\" ! -name \".*\" ! -name \"node_modules\" -exec rm -r {} \\; & tsc",
 		"idev": "cp package.json temp.json && cp package.dev.json package.json && npm install && rm -rf package.json && cp temp.json package.json && rm -rf temp.json"

@@ -12,11 +12,13 @@
 	],
 	"dependencies": {
 		"micromatch": "^4.0.5",
-		"@sveltejs/kit": "^1.25.0"
+		"@sveltejs/kit": "^1.25.0",
+		"jsonwebtoken": "^9.0.2"
 	},
 	"devDependencies": {
 		"typescript": "^5.2.2",
 		"@types/node": "^20.6.0",
-		"@types/micromatch": "^4.0.2"
+		"@types/micromatch": "^4.0.2",
+		"@types/jsonwebtoken": "^9.0.2"
 	}
 }

@@ -21,3 +21,4 @@ __exportStar(require("./entities/image-interface"), exports);
 __exportStar(require("./entities/materialize-it"), exports);
 __exportStar(require("./routes/gql"), exports);
 __exportStar(require("./routes/upload"), exports);
+__exportStar(require("./util/jwt"), exports);

@@ -7,5 +7,7 @@
 		"./**/*"
 	],
 	"dependencies": {
+		"@types/micromatch": "^4.0.2",
+		"@types/jsonwebtoken": "^9.0.2"
 	}
 }

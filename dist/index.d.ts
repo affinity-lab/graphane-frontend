@@ -5,3 +5,4 @@ export * from "./entities/image-interface";
 export * from "./entities/materialize-it";
 export * from "./routes/gql";
 export * from "./routes/upload";
+export * from "./util/jwt";

@@ -6,13 +6,13 @@ import {isMatch} from "micromatch";
 
 
 export class Catalog {
-    public static readonly fileUrl: string = "";
+    public static fileUrl: string = "";
 
-    public static readonly imageUrl: string = "";
+    public static imageUrl: string = "";
 
-    public static readonly uploadUrl: string = "";
+    public static uploadUrl: string = "";
 
-    public readonly files: FileAttachment[] = [];
+    public files: FileAttachment[] = [];
 
     constructor(
         public readonly entity: AtomWithAttachments,

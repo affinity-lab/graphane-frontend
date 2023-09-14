@@ -1,7 +1,7 @@
 import type {AtomWithAttachments} from "./atom-with-attachments";
-import {FileInterface} from "./file-interface";
+import type {FileInterface} from "./file-interface";
 import {MaterializeIt} from "../util/materialize-it";
-import {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "./image-interface";
+import type {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "./image-interface";
 import {isMatch} from "micromatch";
 
 

@@ -34,8 +34,8 @@ export class Catalog {
         return this.files.find((file: FileAttachment): boolean => isMatch(file.name, namePattern));
     };
 
-    download(url: string): Promise<Response> {
-        return fetch(url, {method: "POST"});
+    download(url: string, event: RequestEvent): Promise<Response> {
+        return event.fetch(url, {method: "POST"});
     };
 
     async upload(files: File | File[], event: RequestEvent): Promise<Response> {
@@ -48,7 +48,7 @@ export class Catalog {
         body.append("entityName", this.entity.META.entityName);
         body.append("id", this.entity.id.toString());
         body.append("catalog", this.catalogName);
-        return await event.fetch(Catalog.uploadUrl, {body});
+        return await event.fetch(Catalog.uploadUrl, {body, method: "POST"});
     };
 }
 

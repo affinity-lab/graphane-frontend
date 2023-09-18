@@ -4,6 +4,7 @@ import {MaterializeIt} from "../util/materialize-it";
 import type {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "./image-interface";
 import {isMatch} from "micromatch";
 import type {RequestEvent} from "@sveltejs/kit";
+import {error} from "@sveltejs/kit";
 
 
 export class Catalog {
@@ -41,7 +42,9 @@ export class Catalog {
     async upload(files: File | File[], event: RequestEvent): Promise<Response> {
         if (!Array.isArray(files)) files = [files];
         const body: FormData = new FormData();
+        if (files.length === 0) throw error(400, "No files");
         for (let file of files) {
+            if (file.name === "undefined") throw error(400, "Undefined file name");
             body.append(file.name, file);
         }
         body.append("module", this.entity.META.module);

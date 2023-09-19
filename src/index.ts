@@ -5,6 +5,5 @@ export * from "./entities/image-interface";
 export * from "./util/materialize-it";
 
 export * from "./routes/gql";
-export * from "./routes/upload";
 
 export * from "./util/jwt";

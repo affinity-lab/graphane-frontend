@@ -8,13 +8,29 @@ import {error} from "@sveltejs/kit";
 
 
 export class Catalog {
-    public static fileUrl: string = "";
+    public static fileUrl: string;
 
-    public static imageUrl: string = "";
+    public static imageUrl: string;
 
-    public static uploadUrl: string = "";
+    private static uploadUrl: string;
+
+    private static gqlUrl: string;
+
+    private static api_key: string;
+
+    private static createToken: (event: RequestEvent) => string | undefined;
 
     public files: FileAttachment[] = [];
+
+    static init(fileUrl: string, imageUrl: string, uploadUrl: string, gqlUrl: string, api_key: string, createToken: (event: RequestEvent) => string | undefined): void {
+        Catalog.fileUrl = fileUrl;
+        Catalog.imageUrl = imageUrl;
+        Catalog.uploadUrl = uploadUrl;
+        Catalog.gqlUrl = gqlUrl;
+        Catalog.api_key = api_key;
+        Catalog.createToken = createToken;
+        Catalog.init = (): void => {throw new Error("Catalog class has been initialized already");};
+    };
 
     constructor(
         public readonly entity: AtomWithAttachments,
@@ -47,11 +63,37 @@ export class Catalog {
             if (file.name === "undefined") throw error(400, "Undefined file name");
             body.append(file.name, file);
         }
-        body.append("module", this.entity.META.module);
-        body.append("entityName", this.entity.META.entityName);
-        body.append("id", this.entity.id.toString());
-        body.append("catalog", this.catalogName);
-        return await event.fetch(Catalog.uploadUrl, {body, method: "POST"});
+        const header = {
+            "authorization": Catalog.createToken(event) ?? "",
+            "api-key": Catalog.api_key
+        };
+        const res: {data?: {token?: string | null}} = await fetch(Catalog.gqlUrl, {
+                body: JSON.stringify({
+                    "query": `mutation ${this.entity.META.module}_modifyFiles${this.entity.META.entityName}($variables: FileInputVariables!, $id: Float!, $command: String!, $catalog: String!) {
+                    token: ${this.entity.META.module}_modifyFiles${this.entity.META.entityName}(variables: $variables, id: $id, command: $command, catalog: $catalog)}`,
+                    "variables": {
+                        "variables": {},
+                        "id": this.entity.id,
+                        "command": "upload",
+                        "catalog": this.catalogName
+                    }
+                }),
+                method: "POST",
+                headers: {
+                    ...header,
+                    "Content-Type": "application/json"
+                }
+            }
+        ).then((res: Response) => res.json());
+        if (!res.data?.token) throw error(500, "Can't get upload token");
+        return await event.fetch(Catalog.uploadUrl, {
+            headers: {
+                ...header,
+                "file-token": res.data.token
+            },
+            body,
+            method: "POST"
+        });
     };
 }
 

@@ -118,7 +118,7 @@ export class FileAttachment implements FileInterface {
 
     @MaterializeIt()
     get url(): string {
-        return `${Catalog.fileUrl}/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.name}`;
+        return `${Catalog.fileUrl}/${this.catalog.entity.META.ident}/${this.catalog.catalogName}/${this.name}`;
     };
 
     img(x: number, y: number): ImageAttachment {
@@ -158,6 +158,6 @@ export class ImageAttachment extends FileAttachment implements ImageInterface {
 
     @MaterializeIt()
     get webp(): string {
-        return `${Catalog.imageUrl}/${this.catalog.entity.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
+        return `${Catalog.imageUrl}/${this.catalog.entity.META.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
     };
 }

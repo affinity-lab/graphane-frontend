@@ -4,14 +4,13 @@
 	"author": "Affinity Lab",
 	"main": "src/index",
 	"dependencies": {
-		"micromatch": "^4.0.5",
 		"@sveltejs/kit": "^1.25.0",
-		"jsonwebtoken": "^9.0.2"
+		"jsonwebtoken": "^9.0.2",
+		"minimatch": "^9.0.3"
 	},
 	"devDependencies": {
-		"typescript": "^5.2.2",
+		"@types/jsonwebtoken": "^9.0.2",
 		"@types/node": "^20.6.0",
-		"@types/micromatch": "^4.0.2",
-		"@types/jsonwebtoken": "^9.0.2"
+		"typescript": "^5.2.2"
 	}
 }

@@ -2,7 +2,7 @@ import type {AtomWithAttachments} from "../atom-with-attachments";
 import type {FileInterface} from "../file-interface";
 import {MaterializeIt} from "../../util/materialize-it";
 import type {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "../image-interface";
-import {isMatch} from "micromatch";
+import {minimatch}  from "minimatch";
 import type {RequestEvent} from "@sveltejs/kit";
 import {error} from "@sveltejs/kit";
 import {FileAttachment} from "./attachment";
@@ -40,7 +40,7 @@ export class Catalog {
     get first(): FileAttachment | undefined {return this.files[0];}
 
     find(namePattern: string): FileAttachment | undefined {
-        return this.files.find((file: FileAttachment): boolean => isMatch(file.name, namePattern));
+        return this.files.find((file: FileAttachment): boolean => minimatch(file.name, namePattern));
     };
 
     download(url: string, event: RequestEvent): Promise<Response> {

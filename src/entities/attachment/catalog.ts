@@ -1,22 +1,19 @@
-import type {AtomWithAttachments} from "./atom-with-attachments";
-import type {FileInterface} from "./file-interface";
-import {MaterializeIt} from "../util/materialize-it";
-import type {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "./image-interface";
-import {isMatch} from "micromatch";
+import type {AtomWithAttachments} from "../atom-with-attachments";
+import type {FileInterface} from "../file-interface";
+import {MaterializeIt} from "../../util/materialize-it";
+import type {ImageInterface, ImgDimension, ImgFocus, ImgRGB} from "../image-interface";
+import {minimatch}  from "minimatch";
 import type {RequestEvent} from "@sveltejs/kit";
 import {error} from "@sveltejs/kit";
+import {FileAttachment} from "./attachment";
 
 
 export class Catalog {
-    public static fileUrl: string;
-
-    public static imageUrl: string;
-
-    private static uploadUrl: string;
-
-    private static gqlUrl: string;
-
-    private static api_key: string;
+    public static fileUrl: string
+    public static imageUrl: string
+    private static uploadUrl: string
+    private static gqlUrl: string
+    private static api_key: string
 
     private static createToken: (event: RequestEvent) => string | undefined;
 
@@ -30,25 +27,20 @@ export class Catalog {
         Catalog.api_key = api_key;
         Catalog.createToken = createToken;
         Catalog.init = (): void => {throw new Error("Catalog class has been initialized already");};
-    };
+    }
 
-    constructor(
-        public readonly entity: AtomWithAttachments,
-        public readonly catalogName: string
-    ) {
+    constructor(public readonly entity: AtomWithAttachments, public readonly catalogName: string) {
         if (!entity.META.catalogs?.includes(catalogName) || entity[catalogName] === undefined) throw new Error(`Catalog does not present in entity: ${entity.META.ident}.`);
         const files: FileInterface[] = entity[catalogName] as FileInterface[];
         for (let file of files) {
             this.files.push(new FileAttachment(file, this));
         }
-    };
+    }
 
-    get first(): FileAttachment | undefined {
-        return this.files[0];
-    };
+    get first(): FileAttachment | undefined {return this.files[0];}
 
     find(namePattern: string): FileAttachment | undefined {
-        return this.files.find((file: FileAttachment): boolean => isMatch(file.name, namePattern));
+        return this.files.find((file: FileAttachment): boolean => minimatch(file.name, namePattern));
     };
 
     download(url: string, event: RequestEvent): Promise<Response> {
@@ -96,68 +88,58 @@ export class Catalog {
         });
     };
 }
-
-export class FileAttachment implements FileInterface {
-    size: number;
-
-    name: string;
-
-    mimeType: string;
-
-    title: string;
-
-    location: string;
-
-    constructor(public readonly file: FileInterface, protected readonly catalog: Catalog) {
-        this.size = file.size;
-        this.name = file.name;
-        this.mimeType = file.mimeType;
-        this.title = file.title;
-        this.location = file.location;
-    };
-
-    @MaterializeIt()
-    get url(): string {
-        return `${Catalog.fileUrl}/${this.catalog.entity.META.ident}/${this.catalog.catalogName}/${this.name}`;
-    };
-
-    img(x: number, y: number): ImageAttachment {
-        return ImageAttachment.create(this, {width: x, height: y});
-    };
-}
-
-export class ImageAttachment extends FileAttachment implements ImageInterface {
-    dimensions: ImgDimension;
-
-    dominant: ImgRGB;
-
-    isAnimated: boolean;
-
-    focus: ImgFocus;
-
-    version: number;
-
-    fileName: string;
-
-    extension: string;
-
-    static create(init: FileAttachment, dimensions: ImgDimension): ImageAttachment {
-        const instance: ImageAttachment = init as ImageAttachment;
-        const file: ImageInterface = init.file as ImageInterface;
-        instance.dominant = file.dominant;
-        instance.isAnimated = file.isAnimated;
-        instance.focus = file.focus;
-        instance.version = file.version;
-        instance.dimensions = dimensions;
-        const i: number = instance.name.lastIndexOf(".");
-        if (i === -1) throw new Error(`No extension: ${instance.name}`);
-        instance.fileName = instance.name.slice(0, i);
-        instance.extension = instance.name.slice(i + 1);
-        return instance;
-    };
-
-    @MaterializeIt()
-    get webp(): string {
-        return `${Catalog.imageUrl}/${this.catalog.entity.META.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
-    };
-}
+//
+// export class FileAttachment implements FileInterface {
+//     size: number;
+//     name: string;
+//     mimeType: string;
+//     title: string;
+//     location: string;
+//
+//     constructor(public readonly file: FileInterface, protected readonly catalog: Catalog) {
+//         this.size = file.size;
+//         this.name = file.name;
+//         this.mimeType = file.mimeType;
+//         this.title = file.title;
+//         this.location = file.location;
+//     };
+//
+//     @MaterializeIt()
+//     get url(): string {
+//         return `${Catalog.fileUrl}/${this.catalog.entity.META.ident}/${this.catalog.catalogName}/${this.name}`;
+//     };
+//
+//     img(x: number, y: number): ImageAttachment {
+//         return ImageAttachment.create(this, {width: x, height: y});
+//     };
+// }
+//
+// export class ImageAttachment extends FileAttachment implements ImageInterface {
+//     dimensions: ImgDimension;
+//     dominant: ImgRGB;
+//     isAnimated: boolean;
+//     focus: ImgFocus;
+//     version: number;
+//     fileName: string;
+//     extension: string;
+//
+//     static create(init: FileAttachment, dimensions: ImgDimension): ImageAttachment {
+//         const instance: ImageAttachment = init as ImageAttachment;
+//         const file: ImageInterface = init.file as ImageInterface;
+//         instance.dominant = file.dominant;
+//         instance.isAnimated = file.isAnimated;
+//         instance.focus = file.focus;
+//         instance.version = file.version;
+//         instance.dimensions = dimensions;
+//         const i: number = instance.name.lastIndexOf(".");
+//         if (i === -1) throw new Error(`No extension: ${instance.name}`);
+//         instance.fileName = instance.name.slice(0, i);
+//         instance.extension = instance.name.slice(i + 1);
+//         return instance;
+//     };
+//
+//     @MaterializeIt()
+//     get webp(): string {
+//         return `${Catalog.imageUrl}/${this.catalog.entity.META.ident}/${this.catalog.catalogName}/${this.dimensions.width}.${this.dimensions.height}.${this.focus}.${this.version}.${this.extension}/${this.fileName}.webp`;
+//     };
+// }

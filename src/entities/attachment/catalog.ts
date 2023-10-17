@@ -87,6 +87,31 @@ export class Catalog {
             method: "POST"
         });
     };
+
+    async remove(fileName: string, event: RequestEvent): Promise<Response> {
+        const header = {
+            "authorization": Catalog.createToken(event) ?? "",
+            "api-key": Catalog.api_key
+        };
+        return await fetch(Catalog.gqlUrl, {
+                body: JSON.stringify({
+                    "query": `mutation ${this.entity.META.module}_modifyFiles${this.entity.META.entityName}($variables: FileInputVariables!, $id: Float!, $command: String!, $catalog: String!) {
+                    token: ${this.entity.META.module}_modifyFiles${this.entity.META.entityName}(variables: $variables, id: $id, command: $command, catalog: $catalog)}`,
+                    "variables": {
+                        "variables": {fileName: fileName},
+                        "id": this.entity.id,
+                        "command": "delete",
+                        "catalog": this.catalogName
+                    }
+                }),
+                method: "POST",
+                headers: {
+                    ...header,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+    };
 }
 //
 // export class FileAttachment implements FileInterface {
